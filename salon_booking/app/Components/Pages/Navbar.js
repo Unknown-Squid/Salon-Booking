@@ -3,13 +3,11 @@ import Link from 'next/link'
 import React, { useState } from 'react'
 import { ArrowDropDown, ArrowDropUp } from "@mui/icons-material";
 import { MenuItem, Menu } from "@mui/material";
-
+import Image from 'next/image';
 
 const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [anchorEl2, setAnchorEl2] = useState(null);
-  const [showMenu, setShowMenu] = useState(false);
-  const [showMenu2, setShowMenu2] = useState(false);
+  const [anchorEl2, setAnchorEl2] = useState(null); 
   const open = Boolean(anchorEl);
   const open2 = Boolean(anchorEl2);
 
@@ -18,27 +16,36 @@ const Navbar = () => {
     handleClose();
   };
 
-
   return (
     <nav className='h-[66px] w-[full] bg-[#F3C90D] flex items-center relative'>
         {/* LOGO */}
-        <div className='bg-black w-[200px] h-[90%] absolute left-[10%]'></div>
+        <div className='w-fit h-fit absolute left-[12%]'>
+            <Image
+                src={"/images/logo/navbar-logo.png"}
+                width={500}
+                height={500}
+                className='w-fit h-fit'
+                alt='navbar logo'
+            />
+        </div>
         {/* MENU */}
-        <div className='w-full flex flex-row justify-center items-center gap-20 text-[12px] text-black font-iRegular'>
+        <div className='w-full flex flex-row justify-center items-center gap-20 text-[16px] text-black font-iRegular'>
             <Link
                 href={"/"}
+                className='cursor-pointer'
             >
                 Home
             </Link>
             <Link
                 href={"/"}
+                className='cursor-pointer'
             >
                 About Us
             </Link>
             <button
                 type='button'
                 onClick={(e) => setAnchorEl(e.currentTarget)}
-                className='text-[var(--text-white)]'
+                className='text-[var(--text-white)] cursor-pointer'
             >
                 Services
                 {open ? <ArrowDropUp /> : <ArrowDropDown />}
@@ -49,17 +56,17 @@ const Navbar = () => {
                 open={open}
                 onClose={() => setAnchorEl(null)}
             >
-                <Link href="/services#offers">
+                <Link href="/services#offers" className='cursor-pointer'>
                     <MenuItem onClick={handleMenuItemClick}>
                         Offers
                     </MenuItem>
                 </Link>
-                <Link href="/services#packages">
+                <Link href="/services#packages" className='cursor-pointer'>
                     <MenuItem onClick={handleMenuItemClick}>
                         Packages
                     </MenuItem>
                 </Link>
-                <Link href="/services#pricing">
+                <Link href="/services#pricing" className='cursor-pointer'>
                     <MenuItem onClick={handleMenuItemClick}>
                         Pricing
                     </MenuItem>
@@ -68,8 +75,8 @@ const Navbar = () => {
 
             <button
                 type='button'
-                onClick={(e) => setAnchorEl(e.currentTarget)}
-                className='text-[var(--text-white)]'
+                onClick={(e) => setAnchorEl2(e.currentTarget)}
+                className='text-[var(--text-white)] cursor-pointer'
             >
                 Booking
                 {open2 ? <ArrowDropUp /> : <ArrowDropDown />}
@@ -80,12 +87,12 @@ const Navbar = () => {
                 open={open2}
                 onClose={() => setAnchorEl2(null)}
             >
-                <Link href="/booking/booking-form">
+                <Link href="/booking/booking-form" className='cursor-pointer'>
                     <MenuItem onClick={handleMenuItemClick}>
                         Booking Form
                     </MenuItem>
                 </Link>
-                <Link href="/booking/find-booking">
+                <Link href="/booking/find-booking" className='cursor-pointer'>
                     <MenuItem onClick={handleMenuItemClick}>
                         Find Booking
                     </MenuItem>
