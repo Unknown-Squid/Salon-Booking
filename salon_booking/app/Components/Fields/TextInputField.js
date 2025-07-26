@@ -16,7 +16,7 @@ const TextInputField = ({
     inputTextFont,
     inputTextColor,
     handleChange,
-
+    handleKeyDown,
     labelTextSize
 }) => {
   return (
@@ -35,6 +35,7 @@ const TextInputField = ({
             id={inputId}
             name={inputName}
             onChange={handleChange}
+            onKeyDown={handleKeyDown}
             className={`${customClass} ${inputRadius ? inputRadius : "rounded-[15px]"} ${inputBg ? inputBg :  "bg-transparent"}
                   ${inputBorder ? inputBorder :  "border border-[#D9D9D9]"} ${inputWidth ? inputWidth : "w-full"} 
                   ${inputHeight ? inputHeight : "h-full"} ${inputTextSize ? inputTextSize : "text-[24px]"} 

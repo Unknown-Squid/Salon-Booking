@@ -11,10 +11,10 @@ const Navbar = () => {
   const open = Boolean(anchorEl);
   const open2 = Boolean(anchorEl2);
 
-  const handleMenuItemClick = () => {
-    setLoading(true);
-    handleClose();
-  };
+//   const handleMenuItemClick = () => {
+//     // setLoading(true);
+//     // handleClose();
+//   };
 
   return (
     <nav className='h-[66px] w-[full] bg-[#F3C90D] flex items-center relative'>
@@ -57,17 +57,17 @@ const Navbar = () => {
                 onClose={() => setAnchorEl(null)}
             >
                 <Link href="/services#offers" className='cursor-pointer'>
-                    <MenuItem onClick={handleMenuItemClick}>
+                    <MenuItem>
                         Offers
                     </MenuItem>
                 </Link>
                 <Link href="/services#packages" className='cursor-pointer'>
-                    <MenuItem onClick={handleMenuItemClick}>
+                    <MenuItem>
                         Packages
                     </MenuItem>
                 </Link>
                 <Link href="/services#pricing" className='cursor-pointer'>
-                    <MenuItem onClick={handleMenuItemClick}>
+                    <MenuItem>
                         Pricing
                     </MenuItem>
                 </Link>
@@ -88,12 +88,12 @@ const Navbar = () => {
                 onClose={() => setAnchorEl2(null)}
             >
                 <Link href="/booking/booking-form" className='cursor-pointer'>
-                    <MenuItem onClick={handleMenuItemClick}>
+                    <MenuItem>
                         Booking Form
                     </MenuItem>
                 </Link>
                 <Link href="/booking/find-booking" className='cursor-pointer'>
-                    <MenuItem onClick={handleMenuItemClick}>
+                    <MenuItem>
                         Find Booking
                     </MenuItem>
                 </Link>

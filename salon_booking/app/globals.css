@@ -159,3 +159,80 @@ body {
 .font-rLight {
   font-family: var(--roboto-light);
 }
+
+
+.custom-back-button {
+  background-color: transparent;
+  border: 1px solid #BF6C00;
+  color: #BF6C00;
+  border-radius: 10px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-right: 18px;
+  padding-left: 18px;
+  font-size: 15px;
+  margin-right: 10px;
+}
+
+.custom-done-button {
+  background-color: #BF6C00;
+  color: white;
+  border-radius: 10px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-right: 18px;
+  padding-left: 18px;
+  font-size: 15px;
+}
+
+.custom-swal-popup {
+  font-family: var(--roboto-bold);
+  width: 98%;
+  font-size: 12px;
+  border-radius: 25px;
+}
+
+@media (width >= 40rem) { 
+  .custom-swal-popup {
+    font-family: var(--roboto-bold);
+    width: 70%;
+    font-size: 15px;
+    border-radius: 25px;
+  }
+
+  .custom-done-button {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-right: 30px;
+    padding-left: 30px;
+    font-size: 18px;
+  }
+
+  .custom-back-button {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-right: 30px;
+    padding-left: 30px;
+    font-size: 18px;
+    margin-right: 10px;
+  }
+}
+
+@media (width >= 64rem) { 
+  .custom-swal-popup {
+    font-family: var(--roboto-bold);
+    width: 50%;
+    font-size: 15px;
+    border-radius: 25px;
+  }
+}
+
+@media (width >= 80rem) { 
+  .custom-swal-popup {
+    font-family: var(--roboto-bold);
+    width: 30%;
+    font-size: 15px;
+    border-radius: 25px;
+  }
+}
+
