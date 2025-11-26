@@ -44,26 +44,6 @@ const Footer = () => {
                     href={"/"}
                     className="text-[24px]"
                 >
-                    About Us
-                </Link>
-                <div className='w-full h-fit gap-3 flex flex-col ms-5 text-[16px]'>
-                    <Link
-                        href={"/"}
-                    >
-                        Employees
-                    </Link>
-                    <Link
-                        href={"/"}
-                    >
-                        Inquiries
-                    </Link>
-                </div>
-            </div>
-            <div className='flex flex-col h-fit w-[150px] gap-3'>
-                <Link
-                    href={"/"}
-                    className="text-[24px]"
-                >
                     Services
                 </Link>
                 <div className='w-full h-fit gap-3 flex flex-col ms-5 text-[16px]'>

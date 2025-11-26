@@ -36,12 +36,6 @@ const Navbar = () => {
             >
                 Home
             </Link>
-            <Link
-                href={"/"}
-                className='cursor-pointer'
-            >
-                About Us
-            </Link>
             <button
                 type='button'
                 onClick={(e) => setAnchorEl(e.currentTarget)}

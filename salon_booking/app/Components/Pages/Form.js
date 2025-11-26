@@ -1,5 +1,6 @@
 "use client"
 import React, { use, useEffect, useMemo, useState } from 'react'
+import { motion } from 'framer-motion'
 import TextInputField from '../Fields/TextInputField'
 import EmployeeProfile from '../Cards/EmployeeProfile';
 import TextAreaField from '../Fields/TextAreaField';
@@ -38,52 +39,93 @@ const Form = ({setIsModal, transactionNumber, confirm}) => {
 
   const handleTimeChange = (e) => {
     const selectedTime = e.target.value;
+    
+    // Always set the time first - this ensures the input works
+    setTime(selectedTime);
 
-    // Parse selected time
-    const [selHour, selMin] = selectedTime.split(":").map(Number);
-    const selectedDate = new Date();
-    selectedDate.setHours(selHour, selMin, 0, 0); // clear seconds/millis
-
-    // Time formatter for AM/PM display
-    const formatTime = (date) =>
-      date.toLocaleTimeString("en-US", {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-      });
-
-    // Check conflict
-    const conflict = data.find((booking) => {
-      const [bookHour, bookMin] = booking.time.split(":").map(Number);
-      const bookingStart = new Date();
-      bookingStart.setHours(bookHour, bookMin, 0, 0);
-
-      const duration = booking.duration || 0; // already in data
-      const bookingEnd = new Date(bookingStart.getTime() + duration * 60000);
-
-      return selectedDate >= bookingStart && selectedDate < bookingEnd;
-    });
-
-    if (conflict) {
-      const [bookHour, bookMin] = conflict.time.split(":").map(Number);
-      const bookingStart = new Date();
-      bookingStart.setHours(bookHour, bookMin, 0, 0);
-
-      const duration = conflict.duration || 0;
-      const bookingEnd = new Date(bookingStart.getTime() + duration * 60000);
-
-      Swal.fire({
-        icon: "warning",
-        title: "Time Conflict",
-        text: `Selected time overlaps with an existing booking by ${conflict.name}.\nBooked from ${formatTime(bookingStart)} to ${formatTime(bookingEnd)}.`,
-      });
-
-      setTime(""); // Clear input
+    // If no time selected, we're done
+    if (!selectedTime) {
       return;
     }
 
-    // No conflict — set time
-    setTime(selectedTime);
+    // Validate time format (HH:MM)
+    if (!/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(selectedTime)) {
+      return;
+    }
+
+    try {
+      // Parse selected time
+      const [selHour, selMin] = selectedTime.split(":").map(Number);
+      if (isNaN(selHour) || isNaN(selMin)) {
+        return;
+      }
+
+      const selectedDate = new Date();
+      selectedDate.setHours(selHour, selMin, 0, 0);
+
+      // Time formatter for AM/PM display
+      const formatTime = (date) =>
+        date.toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+        });
+
+      // Check conflict only if we have booking data
+      if (data && Array.isArray(data) && data.length > 0) {
+        const conflict = data.find((booking) => {
+          // Validate booking time format
+          if (!booking.time || typeof booking.time !== 'string') {
+            return false;
+          }
+
+          try {
+            const [bookHour, bookMin] = booking.time.split(":").map(Number);
+            if (isNaN(bookHour) || isNaN(bookMin)) {
+              return false;
+            }
+
+            const bookingStart = new Date();
+            bookingStart.setHours(bookHour, bookMin, 0, 0);
+
+            const duration = booking.duration || 0;
+            const bookingEnd = new Date(bookingStart.getTime() + duration * 60000);
+
+            return selectedDate >= bookingStart && selectedDate < bookingEnd;
+          } catch (error) {
+            console.error("Error checking conflict:", error);
+            return false;
+          }
+        });
+
+        if (conflict) {
+          try {
+            const [bookHour, bookMin] = conflict.time.split(":").map(Number);
+            const bookingStart = new Date();
+            bookingStart.setHours(bookHour, bookMin, 0, 0);
+
+            const duration = conflict.duration || 0;
+            const bookingEnd = new Date(bookingStart.getTime() + duration * 60000);
+
+            // Use setTimeout to ensure the time is set before showing the alert
+            setTimeout(() => {
+              Swal.fire({
+                icon: "warning",
+                title: "Time Conflict",
+                text: `Selected time overlaps with an existing booking by ${conflict.name || 'someone'}.\nBooked from ${formatTime(bookingStart)} to ${formatTime(bookingEnd)}.`,
+              }).then(() => {
+                // Clear the time after user acknowledges the conflict
+                setTime("");
+              });
+            }, 100);
+          } catch (error) {
+            console.error("Error displaying conflict:", error);
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Error in handleTimeChange:", error);
+    }
   };
 
   const serviceItems = [
@@ -99,9 +141,9 @@ const Form = ({setIsModal, transactionNumber, confirm}) => {
   ]
 
   const empProfItems = [
-    {empImgSrc: "/images/pages/employee-profile/employee1.png", name: "stylist 1"},
-    {empImgSrc: "/images/pages/employee-profile/employee2.png", name: "stylist 2"},
-    {empImgSrc: "/images/pages/employee-profile/employee3.png", name: "stylist 3"}
+    {empImgSrc: "/images/pages/employee-profile/employee1.png", name: "Stylist 1"},
+    {empImgSrc: "/images/pages/employee-profile/employee2.png", name: "Stylist 2"},
+    {empImgSrc: "/images/pages/employee-profile/employee3.png", name: "Stylist 3"}
   ]
   
   const textInputConfigs = [
@@ -224,12 +266,26 @@ const Form = ({setIsModal, transactionNumber, confirm}) => {
 
 
   return (
-    <div className='bg-white h-fit w-full flex flex-col items-center font-iRegular text-black text-[32px] mb-20'>
-      <div className='w-[90%] h-fit bg-transparent flex flex-col gap-16'>
-        <h5 className='font-iBold mt-14'>Booking Form</h5>
-        <div className='flex w-full h-fit justify-center gap-24'>
+    <div className='bg-white h-fit w-full flex flex-col items-center font-iRegular text-black text-[32px] mb-20 py-12'>
+      <div className='w-[90%] max-w-7xl h-fit bg-transparent flex flex-col gap-16'>
+        <motion.h5 
+          className='font-iBold mt-14 text-4xl bg-gradient-to-r from-[#5A4C00] via-[#C0A200] to-[#5A4C00] bg-clip-text text-transparent'
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          Booking Form
+        </motion.h5>
+        <div className='flex w-full h-fit justify-center gap-24 flex-wrap lg:flex-nowrap'>
 
-          <div className='w-[30%] h-fit flex flex-col gap-5'>
+          <motion.div 
+            className='w-full lg:w-[30%] h-fit flex flex-col gap-5'
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
             {textInputConfigs.map((field, idx) => {
               if (field.type === "input") { 
                 return <TextInputField
@@ -240,8 +296,8 @@ const Form = ({setIsModal, transactionNumber, confirm}) => {
                   inputName={field.name}
                   handleChange={field.onChange}
                   inputHeight={"h-[70px]"}
-                  inputBorder={"border border-black"}
-                  inputRadius={"rounded-[10px]"}
+                  inputBorder={"border-2 border-gray-300 focus:border-[#BF6C00] transition-colors"}
+                  inputRadius={"rounded-xl"}
                 />
               } 
               if (field.type === "select") { 
@@ -253,8 +309,8 @@ const Form = ({setIsModal, transactionNumber, confirm}) => {
                   selectName={field.name}
                   handleChange={(e) => field.onChange(e, idx)}
                   selectHeight={"h-[70px]"}
-                  selectBorder={"border border-black"}
-                  selectRadius={"rounded-[10px]"}
+                  selectBorder={"border-2 border-gray-300 focus:border-[#BF6C00] transition-colors"}
+                  selectRadius={"rounded-xl"}
                   selectItems={field.selectItems}
                 />
               }
@@ -274,7 +330,7 @@ const Form = ({setIsModal, transactionNumber, confirm}) => {
                                 return <button
                                   key={index}
                                   type='button'
-                                  className={`${stylist?.name == emp.name ? "shadow-lg border-4 border-blue-600 rounded-[10px]" : null} w-fit h-fit cursor-pointer`}
+                                  className={`${stylist?.name == emp.name ? "shadow-lg border-4 border-[#BF6C00] rounded-xl ring-2 ring-[#BF6C00]/20" : "border-2 border-transparent hover:border-gray-300"} transition-all duration-300 w-fit h-fit cursor-pointer rounded-xl`}
                                   onClick={() => setStylist(empProfItems[index])}
                                 >
                                   <EmployeeProfile
@@ -288,9 +344,15 @@ const Form = ({setIsModal, transactionNumber, confirm}) => {
                 </div>
               }
             })}
-          </div>
+          </motion.div>
 
-          <div className='w-[30%] h-fit flex flex-col gap-5'>
+          <motion.div 
+            className='w-full lg:w-[30%] h-fit flex flex-col gap-5'
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
             {textInputConfigs2.map((field, idx) => {
               if (field.type === "input") {
                 return (
@@ -318,14 +380,16 @@ const Form = ({setIsModal, transactionNumber, confirm}) => {
                       inputName={field.name}
                       handleChange={field.onChange}
                       inputHeight={"h-[70px]"}
-                      inputBorder={"border border-black"}
-                      inputRadius={"rounded-[10px]"}
+                      inputBorder={"border-2 border-gray-300 focus:border-[#BF6C00] transition-colors"}
+                      inputRadius={"rounded-xl"}
                     />
-                    <div className='flex-1 flex flex-col self-stretch flex justify-center pt-10 text-[20px] gap-2'>
-                      <p>
-                        duration - ({serviceDuration + upgradesDuration})
+                    <div className='flex-1 flex flex-col self-stretch justify-center pt-10 text-[18px] gap-2 bg-gray-50 rounded-xl px-4 py-3 border border-gray-200'>
+                      <p className='text-gray-600 font-iMedium'>
+                        Duration: <span className='text-black font-iBold'>{serviceDuration + upgradesDuration} min</span>
                       </p>
-                       <p>end - ({computedEndTime})</p>
+                      <p className='text-gray-600 font-iMedium'>
+                        End Time: <span className='text-black font-iBold'>{computedEndTime || '--'}</span>
+                      </p>
                     </div>
                 </div>
               } 
@@ -339,8 +403,8 @@ const Form = ({setIsModal, transactionNumber, confirm}) => {
                     inputName={field.name}
                     handleChange={field.onChange}
                     inputHeight={"h-[220px]"}
-                    inputBorder={"border border-black"}
-                    inputRadius={"rounded-[10px]"}
+                    inputBorder={"border-2 border-gray-300 focus:border-[#BF6C00] transition-colors"}
+                    inputRadius={"rounded-xl"}
                   />
                 );
               }
@@ -355,7 +419,7 @@ const Form = ({setIsModal, transactionNumber, confirm}) => {
 
               return null;
             })}
-          </div>
+          </motion.div>
         </div>
 
         <BookingSummaryCard

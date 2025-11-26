@@ -1,4 +1,6 @@
+"use client";
 import React from 'react'
+import { motion } from 'framer-motion'
 import SilverPackageCard from '../Cards/SilverPackageCard'
 import PremiumPackageCard from '../Cards/PremiumPackageCard'
 
@@ -22,31 +24,57 @@ const SalonPackages = () => {
   ]
 
   return (
-    <div className='w-full min-h-[1300px] h-fit flex flex-col gap-10 items-center'>
-        <div className='w-fit h-fit flex relative'>
+    <div className='w-full min-h-[1300px] h-fit flex flex-col gap-10 items-center relative'>
+        <motion.div 
+          className='w-fit h-fit flex relative'
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
             <p className='font-rBold text-[32px] text-black mt-20 mb-12'>
                 Salon Packages
             </p>
-            <div className='rounded-[25px] py-1 px-6 font-ixLight text-black text-[20px] bg-[#FFC800] w-fit h-fit underline absolute top-10 right-[-40%]'>
+            <motion.div 
+              className='rounded-[25px] py-1 px-6 font-ixLight text-black text-[20px] bg-[#FFC800] w-fit h-fit underline absolute top-10 right-[-40%]'
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+            >
                 popular
                 <div className='w-full h-full relative bg-transparent'>
                     <div className='h-[25px] w-[2px] bg-black absolute top-0 left-[-10px]'></div>
                 </div>
-            </div>
-        </div>
+            </motion.div>
+        </motion.div>
         <div className='flex w-full h-fit justify-center items-center gap-5'>
-            <SilverPackageCard
-                packageTitle={"Basic Beauty Package"}
-                packageItems={silverPackageItems}
-                packageDescription={"Great for weekly or monthly self-care routines."}
-                packagePrice={"₱ 999"}
-            />
-            <PremiumPackageCard
-                packageTitle={" Premium Glam Package"}
-                packageItems={premiumPackageItems}
-                packageDescription={"Free consultation with a stylist and complimentary refreshment."}
-                packagePrice={"₱ 2,499"}
-            />
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+            >
+              <SilverPackageCard
+                  packageTitle={"Basic Beauty Package"}
+                  packageItems={silverPackageItems}
+                  packageDescription={"Great for weekly or monthly self-care routines."}
+                  packagePrice={"₱ 999"}
+              />
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+            >
+              <PremiumPackageCard
+                  packageTitle={" Premium Glam Package"}
+                  packageItems={premiumPackageItems}
+                  packageDescription={"Free consultation with a stylist and complimentary refreshment."}
+                  packagePrice={"₱ 2,499"}
+              />
+            </motion.div>
         </div>
     </div>
   )
