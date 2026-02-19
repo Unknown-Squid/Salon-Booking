@@ -68,7 +68,7 @@ const Hero = () => {
               transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
             >
                 <h4 className='text-[#FF00C3] text-[38px] font-rRegular'>Where Beauty Begins</h4>
-                <p className='text-black text-[22px] font-rLight'>"Another Day, Another Slay"</p>
+                <p className='text-black text-[22px] font-rLight'>&quot;Another Day, Another Slay&quot;</p>
             </motion.div>
         </div>
         

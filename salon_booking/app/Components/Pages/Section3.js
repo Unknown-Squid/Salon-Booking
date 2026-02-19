@@ -53,7 +53,7 @@ const Section3 = () => {
           transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
         >
           <p className='text-[36px] font-rBold'>
-            You're one step closer to a change.
+            You&apos;re one step closer to a change.
           </p>
           <p className='text-[36px] font-rMedium'>
             Book your appointment now!

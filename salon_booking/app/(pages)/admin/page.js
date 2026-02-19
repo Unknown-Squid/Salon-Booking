@@ -1,11 +1,11 @@
 "use client"
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image';
-import InputField from '../Components/Fields/InputField';
-import PrimaryButton from '../Components/Buttons/PrimaryButton';
-import { GetAccountDataByKey } from '../apiClient/AdminAccountData';
+import TextInputField from '@/app/Components/Fields/TextInputField';
+import PrimaryButton from '@/app/Components/Buttons/PrimaryButton';
+import { GetAccountDataByKey } from '@/app/apiClient/AdminAccountData';
 import Swal from 'sweetalert2'
-import Loading from '../Components/Page/Loading';
+// import Loading from '@/app/Components/Page/Loading';
 
 export default function Admin() {
 
@@ -51,7 +51,7 @@ export default function Admin() {
         }
     }
 
-    const [loading, setLoading] = useState(true);
+    // const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -61,7 +61,7 @@ export default function Admin() {
                 window.location.href = "/admin/booking"
             } else {
                 document.fonts.ready.then(() => {
-                    setLoading(false);
+                    // setLoading(false);
                 });
             }
         }, 2000);
@@ -69,9 +69,9 @@ export default function Admin() {
         return () => clearTimeout(timer);
     }, []); 
 
-    if (loading){
-        return <Loading/>
-    }
+    // if (loading){
+    //     return <Loading/>
+    // }
 
     return (
         <main 
@@ -152,7 +152,7 @@ export default function Admin() {
                             </div>
                             Admin Portal
                         </h1>
-                        <InputField 
+                        <TextInputField 
                             label={"Username"} 
                             id={"username"} 
                             placeholder={"Enter Username"} 
@@ -160,7 +160,7 @@ export default function Admin() {
                             labelCustomStyle={"text-[var(--text-white)] mb-2"}
                             handleInput={(e) => setUsername(e.target.value)}
                         />
-                        <InputField 
+                        <TextInputField 
                             label={"Password"} 
                             id={"password"} 
                             placeholder={"Enter Password"} 
