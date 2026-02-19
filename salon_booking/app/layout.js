@@ -14,6 +14,9 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "Salon Booking - Book Your Appointment",
   description: "Book your salon appointment online. Professional beauty services at your convenience.",
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({ children }) {
