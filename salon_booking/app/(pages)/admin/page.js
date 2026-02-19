@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image';
 import TextInputField from '@/app/Components/Fields/TextInputField';
 import PrimaryButton from '@/app/Components/Buttons/PrimaryButton';
-import { GetAccountDataByKey } from '@/app/apiClient/AdminAccountData';
+import { GetAccountDataByKey } from '@/app/APIClient/AdminAccountData';
 import Swal from 'sweetalert2'
 // import Loading from '@/app/Components/Page/Loading';
 
